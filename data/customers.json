@@ -1,0 +1,17 @@
+[
+{
+    "id" :"cust001",
+    "customer_name" : "Angad Singh",
+    "customer_email" : "crm19@kwgroup.in",
+    "customer_address": "Villa No.66, Villa Anandam Residency Society, NH-58, Meerut Road, GHAZIABAD, UTTAR PRADESH -201001",
+    "customer_mob": "9811681709",
+    "customer_pan":"AARPG9239N",
+    "customer_bank": "PUNJAB NATIONAL BANK NEHRU NAGAR, GHAZIABAD, UTTAR PRADESH ACCOUNT NO. : 1116000100162119 IFSC CODE  :   PUNB0111600  ",
+    "brand_name" : "La Pinoz",
+    "brand_mail" : "angadsingh1804@gmail.com",
+    "brand_address": "B-41, Top Floor, Backside, Dilshad Colony,New Delhi-110095",
+    "brand_mob" : "9873459882",
+    "brand_pan" : "AMEPA3742K",
+    "brand_gst" : "Un-registered"
+}
+]
