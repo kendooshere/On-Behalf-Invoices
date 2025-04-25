@@ -5,6 +5,7 @@ const PizZip = require("pizzip");
 const docxTemplater = require("docxtemplater");
 const path = require("path");
 const numToWords = require("number-to-words");
+const {exec} = require("child_process");
 
 const app = express();
 app.use(express.json());
@@ -102,6 +103,19 @@ app.post("/generate-invoice", async (req, res) => {
 
   try {
     await fs.writeFile(outputPath, buf);
+    
+    const pdfFilename = `Invoice-${customer.customer_name}-${month}-${fiscalYear}.pdf`;
+    const pdfOutputPath = path.join(outputDir, pdfFilename);
+    
+    exec(`"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf --outdir "${outputDir}" "${outputPath}"`, (err, stdout, stderr)=>{
+        if(err){
+          console.log("PDF conversion Failed!");
+          return res.status(500).json({message: "PDF Conversion did not take place...", error:err});
+        }
+    });
+
+    console.log("PDF conversion Done!");  
+
     return res.json({
       message: "Invoice generated successfully",
       invoice_number: invoiceNumber,
@@ -116,6 +130,8 @@ app.post("/generate-invoice", async (req, res) => {
     });
   }
 });
+
+
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
