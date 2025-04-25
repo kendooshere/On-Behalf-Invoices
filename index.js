@@ -38,8 +38,8 @@ app.post("/generate-invoice", async (req, res) => {
   const lastNum = tracker[customerId]?.[fiscalYear] || 0;
   const nextNum = lastNum + 1;
 
-  const invoiceNumber = `${fiscalYear}/${String(nextNum).padStart(2, "0")}/${month}`;
   const invoiceDate = formatDate();
+  const invoiceNumber = `${fiscalYear}/${String(nextNum).padStart(2, "0")}/${invoiceDate.split(" ")[1]}`;
 
   tracker[customerId] = {
     ...tracker[customerId],
@@ -53,12 +53,14 @@ app.post("/generate-invoice", async (req, res) => {
   );
   const zip = new PizZip(content);
   const doc = new docxTemplater(zip, { paragraphLoop: true, linebreaks: true });
+  const amountInWords = numToWords.toWords(amount).toUpperCase() +" Only";
 
   const templateData = {
     invoice_no: invoiceNumber,
     date: invoiceDate,
-    month: month,
+    month: month.toUpperCase(),
     amount: amount,
+    amountInWords: amountInWords,
     customer_name: customer.customer_name,
     customer_address: customer.customer_address,
     customer_email: customer.customer_email,
@@ -66,6 +68,8 @@ app.post("/generate-invoice", async (req, res) => {
     customer_pan: customer.customer_pan,
     customer_bank: customer.customer_bank,
     brand_name: customer.brand_name,
+    brand_unit : customer.unit,
+    brand_floor : customer.floor,
     brand_address: customer.brand_address,
     brand_email: customer.brand_email,
     brand_mob: customer.brand_mob,
