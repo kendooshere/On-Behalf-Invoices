@@ -5,7 +5,7 @@ const PizZip = require("pizzip");
 const docxTemplater = require("docxtemplater");
 const path = require("path");
 const numToWords = require("number-to-words");
-const {exec} = require("child_process");
+const { exec } = require("child_process");
 
 const app = express();
 app.use(express.json());
@@ -48,13 +48,10 @@ app.post("/generate-invoice", async (req, res) => {
   };
   await fs.writeJson(trackerPath, tracker, { spaces: 2 });
 
-  const content = await fs.readFile(
-    "./templates/on-behalf-invoice-template.docx",
-    "binary"
-  );
+  const content = await fs.readFile("./templates/on-behalf-invoice-template.docx", "binary");
   const zip = new PizZip(content);
   const doc = new docxTemplater(zip, { paragraphLoop: true, linebreaks: true });
-  const amountInWords = numToWords.toWords(amount).toUpperCase() +" Only";
+  const amountInWords = numToWords.toWords(amount).toUpperCase() + " Only";
 
   const templateData = {
     invoice_no: invoiceNumber,
@@ -69,8 +66,8 @@ app.post("/generate-invoice", async (req, res) => {
     customer_pan: customer.customer_pan,
     customer_bank: customer.customer_bank,
     brand_name: customer.brand_name,
-    brand_unit : customer.unit,
-    brand_floor : customer.floor,
+    brand_unit: customer.unit,
+    brand_floor: customer.floor,
     brand_address: customer.brand_address,
     brand_email: customer.brand_email,
     brand_mob: customer.brand_mob,
@@ -103,24 +100,28 @@ app.post("/generate-invoice", async (req, res) => {
 
   try {
     await fs.writeFile(outputPath, buf);
-    
+
     const pdfFilename = `Invoice-${customer.customer_name}-${month}-${fiscalYear}.pdf`;
     const pdfOutputPath = path.join(outputDir, pdfFilename);
-    
-    exec(`"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf --outdir "${outputDir}" "${outputPath}"`, (err, stdout, stderr)=>{
-        if(err){
-          console.log("PDF conversion Failed!");
-          return res.status(500).json({message: "PDF Conversion did not take place...", error:err});
-        }
+
+    // Use exec to convert DOCX to PDF, but wait for conversion to finish before sending the response
+    exec(`"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf --outdir "${outputDir}" "${outputPath}"`, (err, stdout, stderr) => {
+      if (err) {
+        console.log("PDF conversion Failed!");
+        return res.status(500).json({ message: "PDF Conversion did not take place...", error: err });
+      }
+
+      console.log("PDF conversion Done!");
+
+      // Send response after the conversion is done
+      return res.json({
+        message: "Invoice generated successfully",
+        invoice_number: invoiceNumber,
+        output_path: outputPath,
+        pdf_path: pdfOutputPath, // Add the PDF path to the response
+      });
     });
 
-    console.log("PDF conversion Done!");  
-
-    return res.json({
-      message: "Invoice generated successfully",
-      invoice_number: invoiceNumber,
-      output_path: outputPath,
-    });
   } catch (err) {
     console.error("Error writing file:", err);
     return res.status(500).json({
@@ -130,8 +131,6 @@ app.post("/generate-invoice", async (req, res) => {
     });
   }
 });
-
-
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
