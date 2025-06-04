@@ -38,9 +38,10 @@ app.post("/generate-invoice", async (req, res) => {
 
   const lastNum = tracker[customerId]?.[fiscalYear] || 0;
   const nextNum = lastNum + 1;
+  const billMonth = month;
 
   const invoiceDate = formatDate();
-  const invoiceNumber = `${fiscalYear}/${String(nextNum).padStart(2, "0")}/${invoiceDate.split(" ")[1]}`;
+  const invoiceNumber = `${fiscalYear}/${String(nextNum).padStart(2, "0")}/${billMonth}`;
 
   tracker[customerId] = {
     ...tracker[customerId],
