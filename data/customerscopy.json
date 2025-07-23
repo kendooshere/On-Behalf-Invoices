@@ -1,0 +1,112 @@
+[
+  {
+    "brandId": "brand001",
+    "reg_name": "Jawed Habib",
+    "brand_name": "Beauty Arts (Joyice Kalyan)",
+    "floor": "Second Floor",
+    "brand_email": "fashionicbeautysolutions@gmail.com",
+    "brand_address": "S-127 to S-132, KW Delhi 6, NH-58 Raj Nagar\nExtn., Ghaziabad-201017",
+    "brand_mob": "8920170634",
+    "brand_pan": "AMZPJ6812E",
+    "brand_gst": "09AMZPJ6812E2ZL",
+    "customers": [
+      {
+        "id": "cust001",
+        "customer_name": "Mrs. Meenu Kaushik & Mr. Vishal Kaushik",
+        "customer_email": "vishal.kaushik131977@gmail.com",
+        "customer_address": "H.NO-075,Raj Bagh,Sahibabad.\nGhaziabad, Uttar Pradesh- 201005",
+        "customer_mob": "8826668655",
+        "customer_pan": "AWQPK5784P",
+        "customer_bank": "HDFC BANK\nHARGOBIND ENCLAVE, NEW DELHI\nACCOUNT HOLDER NAME : MEENU KAUSHIK\nACCOUNT NO. : 04811930011306\nIFSC CODE  :   HDFC0000481",
+        "unit": "S-128"
+      },
+      {
+        "id": "cust002",
+        "customer_name": "Mr. Vishal Kaushik & Mrs. Meenu Kaushik",
+        "customer_email": "vishal.kaushik131977@gmail.com",
+        "customer_address": "H.NO-075,Raj Bagh,Sahibabad.\nGhaziabad, Uttar Pradesh- 201005",
+        "customer_mob": "8826668655",
+        "customer_pan": "AOGPK0460A",
+        "customer_bank": "ICICI BANK\nRAJENDER NAGAR, GHAZIABAD\nACCOUNT HOLDER NAME : VISHAL KAUSHIK\nACCOUNT NO. : 003101516566\nIFSC CODE  :   ICIC0006956",
+        "unit": "S-129"
+      },
+      {
+        "id": "cust003",
+        "customer_name": "Mrs. Shalini Chhabra",
+        "customer_email": "ncvfpl@gmail.com",
+        "customer_address": "R2/153 New Raj Nagar\nGhaziabad, Uttar Pradesh- 201001",
+        "customer_mob": "7428621385",
+        "customer_pan": "ABTPC1366P",
+        "customer_bank": " ICICI BANK\nRAJ NAGAR, GHAZIABAD\nACCOUNT HOLDER NAME : SHALINI CHHABRA\nACCOUNT NO. : '033501510648\nIFSC CODE  :   ICIC0006286",
+        "unit": "S-130"
+      },
+      {
+        "id": "cust004",
+        "customer_name": "Mrs. Suman & Ms. Akshya Singh",
+        "customer_email": " kharendra17@gmail.com",
+        "customer_address": "Village Post-Lilaun,Shamli\nGhaziabad, Uttar Pradesh- 247776",
+        "customer_mob": "9402116306",
+        "customer_pan": "DAOPS7173B & HMBPS9121J",
+        "customer_bank": "\n(50:50) RATIO IN BOTH A/C\n 1>STATE BANK OF INDIA\nMAHAMANDIR, JODHPUR\nACCOUNT HOLDER NAME : SUMAN DEVI\nACCOUNT NO. : 20088416474\nIFSC CODE  :   SBIN0011384/2> HDFC BANK\nANAND VIHAR, NEW DELHI\nACCOUNT HOLDER NAME : AKSHYA SINGH\nACCOUNT NO. : 16681460001865\nIFSC CODE  :   HDFC0001668",
+        "unit": "S-131"
+      },
+      {
+        "id": "cust005",
+        "customer_name": "Mrs. Anita Kansal & Mr. Atul Kansal",
+        "customer_email": "shrutikansal11@gmail.com",
+        "customer_address": "H.NO-06,Tirupati Garden,Mawana Road,\nPolice Check Post,Defence Colony.\nMeerut, Uttar Pradesh- 250001",
+        "customer_mob": "9358407508",
+        "customer_pan": "AAXPK9502C",
+        "customer_bank": "\nBANK OF BARODA\nMEERUT\nACCOUNT HOLDER NAME : ANITA KANSAL\nACCOUNT NO. : 00790100029325\nIFSC CODE  :   BARB0MEERUT",
+        "brand_name": "Beauty Arts (Joyice Kalyan)",
+        "unit": "S-132"
+      }
+    ]
+  },
+  {
+    "brandId": "002",
+    "reg_name": "Kiaasa",
+    "brand_name": "Kiaasa Retail Private Limited",
+    "floor": "First Floor",
+    "brand_email": "hr@kiaasaretail.com",
+    "brand_address": "1/37SS GT Road Industrial Area, Lal Kuan,\nGhaziabad, UP-201001",
+    "brand_mob": "8193903903",
+    "brand_pan": "AAJCK5771A",
+    "brand_gst": "09AAJCK5771A1ZH",
+    "customers": [
+      {
+        "id": "cust005",
+        "customer_name": "Prateek Gupta",
+        "customer_email": "prateek21.gupta@yahoo.in",
+        "customer_address": "R-14/99, Raj Nagar\nGHAZIABAD, UTTAR PRADESH -201001",
+        "customer_mob": "9717207388, 9810410574",
+        "customer_pan": "ATBPG8602J",
+        "customer_bank": "INDIAN BANK\nMahaluxmi Mall, Raj Nagar, Ghaziabad\nACCOUNT NO. : 20356887713\nIFSC CODE  :   IDIB000D564",
+        "unit": "F-074 & F-075"
+      }
+    ]
+  },
+  {
+    "brandId": "003",
+    "reg_name": "VIP",
+    "brand_name": " M/S. Pawandev Trading Co. (P/O Ms. Monika)",
+    "floor": "LG-Floor",
+    "brand_email": " pawandevtradingco@gmail.com",
+    "brand_address": "LG-130, KW Delhi 6, NH-58 Raj Nagar Extn.,\nGhaziabad-201001",
+    "brand_mob": "8851206322",
+    "brand_pan": "HABPM1866E",
+    "brand_gst": "09HABPM1866E1ZL",
+    "customers": [
+      {
+        "id": "cust006",
+        "customer_name": "LATA Pandey",
+        "customer_email": " latacharming@gmail.com",
+        "customer_address": "A-17,1st Floor Near NMC Hospital Sec-30\nNoida, Uttar Pradesh- 201301",
+        "customer_mob": "9891849068",
+        "customer_pan": "AHSPP2014J",
+        "customer_bank": "HDFC BANK\nSECTOR-31, NOIDA\nACCOUNT NO. : 18991930002173\nIFSC CODE  :   HDFC0001899\n",
+        "unit": "LG-130"
+      }
+    ]
+  }
+]

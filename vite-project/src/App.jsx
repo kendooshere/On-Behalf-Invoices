@@ -1,19 +1,33 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import React, { useState } from 'react'
+import brands from '../../data/brands.json';
+import BrandSelection from './components/BrandSelection';
+import CustomerSelection from './components/CustomerSelection';
+import DateSelection from './components/DateSelection';
+
 
 function App() {
-  const [customers, setCustomers] = useState([]);
-  const [form, setForm]= useState({
-    customerId:"",
-    month:"",
-    amount:"",
-  });
+  const [selectedBrand, setSelectedBrand] = useState('');
 
-  const handleChange = (e)=>{
-    setForm({...form, [e.target.name]:e.target.value});
-  };
-  
+  function handleOnChange(e) {
+    setSelectedBrand(e.target.value);
+    // console.log(currentBrand);
+  }
+
+  const currentBrand = brands.find(b => b.brandId === selectedBrand);
+
+
+
+  return (
+
+    <>
+      <BrandSelection brands={brands} handleChange={handleOnChange} selectedBrand={selectedBrand} />
+      <CustomerSelection currentBrand={currentBrand} />
+      <DateSelection/>      
+    </>
+
+  );
+
 
 }
 
-export default App
+export default App;
