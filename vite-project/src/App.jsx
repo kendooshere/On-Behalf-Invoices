@@ -7,20 +7,34 @@ import DateSelection from './components/DateSelection';
 
 function App() {
   const [selectedBrand, setSelectedBrand] = useState('');
+  const [formData, setFormData] = useState({
+    brandId:"",
+    month:"",
+    amount:"",
+  });
 
+  
   function handleOnChange(e) {
-    setSelectedBrand(e.target.value);
+    setFormData(function (prev){
+      return{
+        ...prev, [e.target.name]:e.target.value
+      };
+    });
     // console.log(currentBrand);
   }
 
-  const currentBrand = brands.find(b => b.brandId === selectedBrand);
+  async function handleSubmit(e){
+      e.preventDefault();
+  }
+  
+  const currentBrand = brands.find(b => b.brandId === formData.brandId);
 
 
 
   return (
 
     <>
-      <BrandSelection brands={brands} handleChange={handleOnChange} selectedBrand={selectedBrand} />
+      <BrandSelection brands={brands} handleChange={handleOnChange} selectedBrand={formData.brandId} onSubmit={handleSubmit} />
       <CustomerSelection currentBrand={currentBrand} />
       <DateSelection/>      
     </>
