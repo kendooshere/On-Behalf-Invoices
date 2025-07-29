@@ -9,7 +9,7 @@ export default function CustomerSelection({ currentBrand }) {
         {currentBrand.customers.map(customer => (
           <div><br />
             <label key={customer.id}>
-              <input type="checkbox" name={customer.customer_name} id={customer.id} checked="true" />{customer.customer_name}({customer.unit})
+              <input type="checkbox" name={customer.customer_name} id={customer.id} checked="true" value={customer.id} />{customer.customer_name}({customer.unit})
             </label>
           </div>
         ))}
