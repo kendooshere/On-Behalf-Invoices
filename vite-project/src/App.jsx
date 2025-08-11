@@ -8,6 +8,7 @@ import DateSelection from './components/DateSelection';
 function App() {
   const [formData, setFormData] = useState({
     brandId: '',
+    customersList: [],
     month: '',
     amount: '',
   });
@@ -23,19 +24,34 @@ function App() {
     // console.log(currentBrand);
   }
 
+  function handleCustomerToggle(customerId) {
+    setFormData((prev) => {
+      const alreadyChecked = prev.customersList.includes(customerId);
+      return {
+        ...prev,
+        customersList: alreadyChecked
+          ? prev.customersList.filter((id) => id !== customerId)
+          : [...prev.customersList, customerId],
+      };
+    });
+
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:3000/generate-invoice", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData)
-    });
+    console.log(formData);
+
+    // const res = await fetch("http://localhost:3000/generate-invoice", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(formData)
+    // });
   }
 
-  const currentBrand = brands.find(b => b.brandId === formData.brandId);
+  const currentBrand = brands.find(b => b.brandId == formData.brandId);
 
 
 
@@ -43,10 +59,13 @@ function App() {
 
     <>
       <form onSubmit={handleSubmit}>
-      <BrandSelection brands={brands} handleChange={handleOnChange} selectedBrand={formData.brandId} onSubmit={handleSubmit} />
-      <CustomerSelection currentBrand={currentBrand} formData={formData} />
-      <DateSelection formData={formData}/>
+        <BrandSelection brands={brands} handleChange={handleOnChange} selectedBrand={formData.brandId} onSubmit={handleSubmit} />
+        <CustomerSelection currentBrand={currentBrand} formData={formData} handleCustomerToggle={handleCustomerToggle}/>
+        <DateSelection formData={formData} handleChange={handleOnChange} />
+        <button type="submit">Submit</button>
       </form>
+
+      <p>Selected Month: {formData.month}</p>
 
     </>
 

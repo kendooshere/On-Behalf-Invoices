@@ -19,7 +19,7 @@ const formatDate = (date = new Date()) =>
   });
 
 app.post("/generate-invoice", async (req, res) => {
-  const { customerId, month, amount } = req.body;
+  const { brandId, month, amount } = req.body;
   if (!customerId || !month || !amount) {
     return res.status(400).json({ message: "Missing required fields!" });
   }

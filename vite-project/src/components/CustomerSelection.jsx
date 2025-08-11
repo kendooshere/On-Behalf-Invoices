@@ -1,15 +1,17 @@
 
-export default function CustomerSelection({ currentBrand }) {
-  return (
+export default function CustomerSelection({ currentBrand, handleChange, handleCustomerToggle }) {
+  if (!currentBrand) return null;
+
+    return (
     <>
     {
       currentBrand && currentBrand.customers && (
       <>
         <h2>Customers for {currentBrand.reg_name}:</h2>
         {currentBrand.customers.map(customer => (
-          <div><br />
-            <label key={customer.id}>
-              <input type="checkbox" name={customer.customer_name} id={customer.id} checked="true" value={customer.id} />{customer.customer_name}({customer.unit})
+          <div key={customer.id}><br />
+            <label htmlFor={customer.customer_name}>
+              <input type="checkbox" name="customersList" id={customer.customer_name} value={customer.id} onChange={handleCustomerToggle(customer.id)} />{customer.customer_name}({customer.unit})
             </label>
           </div>
         ))}
