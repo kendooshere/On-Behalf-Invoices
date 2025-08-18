@@ -51,7 +51,7 @@ function App() {
     // });
   }
 
-  const currentBrand = brands.find(b => b.brandId == formData.brandId);
+  const currentBrand = brands.find(b => b.brandId === formData.brandId);
 
 
 
@@ -64,9 +64,6 @@ function App() {
         <DateSelection formData={formData} handleChange={handleOnChange} />
         <button type="submit">Submit</button>
       </form>
-
-      <p>Selected Month: {formData.month}</p>
-
     </>
 
   );
