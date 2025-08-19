@@ -1,5 +1,5 @@
 
-export default function CustomerSelection({ currentBrand, handleChange, handleCustomerToggle }) {
+export default function CustomerSelection({ currentBrand, handleCustomerToggle }) {
   const today = new Date();
 
     const activeCustomers = currentBrand?.customers?.filter(customer =>{

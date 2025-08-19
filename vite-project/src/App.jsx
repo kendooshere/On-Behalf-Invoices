@@ -37,18 +37,17 @@ function App() {
 
   }
 
+
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formData);
-
-    // const res = await fetch("http://localhost:3000/generate-invoice", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(formData)
-    // });
+    const res = await fetch("http://localhost:3000/generate-invoice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData)
+    });
   }
 
   const currentBrand = brands.find(b => b.brandId === formData.brandId);
@@ -60,7 +59,7 @@ function App() {
     <>
       <form onSubmit={handleSubmit}>
         <BrandSelection brands={brands} handleChange={handleOnChange} selectedBrand={formData.brandId} onSubmit={handleSubmit} />
-        <CustomerSelection currentBrand={currentBrand} formData={formData} handleCustomerToggle={handleCustomerToggle}/>
+        <CustomerSelection currentBrand={currentBrand} formData={formData} handleCustomerToggle={handleCustomerToggle} />
         <DateSelection formData={formData} handleChange={handleOnChange} />
         <button type="submit">Submit</button>
       </form>
