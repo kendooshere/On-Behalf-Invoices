@@ -47,12 +47,14 @@ function App() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData)
-    });
+    }).
+    then((response) => response.json())
+    .then((data) => console.log(data))
+    .then((error) =>console.log("Error:", error))
+    // console.log(formData);
   }
 
   const currentBrand = brands.find(b => b.brandId === formData.brandId);
-
-
 
   return (
 
