@@ -8,6 +8,7 @@ const path = require("path");
 const numToWords = require("number-to-words");
 const { exec } = require("child_process");
 const nodemailer = require("nodemailer");
+const { stderr } = require("process");
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,24 @@ const formatDate = (date = new Date()) =>
     month: "short",
     year: "numeric",
   });
+
+function execAsync(command) {
+  return new Promise((resolve, reject) => {
+    exec(command, (err, stdout, stderr) => {
+      if (err) reject(err);
+      else resolve(stdout);
+    });
+  });
+}
+
+function sendEmailAsync(transporter, mailOptions) {
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) reject(err);
+      else resolve(info);
+    });
+  });
+}
 
 app.post("/generate-invoice", async (req, res) => {
   const { brandId, customersList, month, amount } = req.body;
@@ -35,28 +54,25 @@ app.post("/generate-invoice", async (req, res) => {
     const chosenCustomers = currentBrand.customers.filter((c) =>
       customersList.includes(c.id)
     );
+
+    const results = [];
+
     for (let customer of chosenCustomers) {
+      try{
       const rentShareAmount = (customer.share * amount) / 100;
 
       const trackerPath = "./data/invoice_tracker.json";
       const tracker = await fs.readJson(trackerPath);
       const fiscalYear = "25-26";
 
-      if(!tracker[currentBrand.brandId]){
-        tracker[currentBrand.brandId] = {};
-      }
+      tracker[currentBrand.brandId] ??= {};
+      tracker[currentBrand.brandId][customer.id] ??= {};
+      tracker[currentBrand.brandId][customer.id][fiscalYear] ??= 0;
 
-      if(!tracker[currentBrand.brandId][customer.id]){
-        tracker[currentBrand.brandId][customer.id] = {};
-      }
-
-      if(!tracker[currentBrand.brandId][customer.id][fiscalYear]){
-        tracker[currentBrand.brandId][customer.id][fiscalYear] = 0;
-      }
-
-      const lastNum = tracker[currentBrand.brandId][customer.id]?.[fiscalYear] || 0;
+      const lastNum =
+        tracker[currentBrand.brandId][customer.id]?.[fiscalYear] || 0;
       const nextNum = lastNum + 1;
-      const billMonth = month;  
+      const billMonth = month;
       const invoiceDate = formatDate();
       const invoiceNumber = `${fiscalYear}/${String(nextNum).padStart(
         2,
@@ -108,10 +124,11 @@ app.post("/generate-invoice", async (req, res) => {
         (key) => !templateData[key]
       );
       if (missingPlaceholders.length > 0) {
-        return res.status(400).json({
+        results.push({
           message: "Missing template data for the following fields:",
           missing_fields: missingPlaceholders,
         });
+        continue;
       }
 
       doc.render(templateData);
@@ -128,66 +145,51 @@ app.post("/generate-invoice", async (req, res) => {
       const pdfFilename = `Invoice-${customer.customer_name}-${month}-${fiscalYear}.pdf`;
       const pdfOutputPath = path.join(outputDir, pdfFilename);
 
-      exec(
-        `"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf --outdir "${outputDir}" "${outputPath}"`,
-        async (err, stdout, stderr) => {
-          if (err) {
-            console.error("PDF conversion Failed!", err);
-            return res
-              .status(500)
-              .json({ message: "PDF conversion failed", error: err });
-          }
-
-          console.log("PDF conversion done!");
-
-          const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              user: process.env.EMAIL_USER1,
-              pass: process.env.EMAIL_PASSWORD1,
-            },
-          });
-
-          const mailOptions = {
-            from: `"Angad Singh" <${process.env.EMAIL_USER1}>`,
-            // to: customer.customer_email,
-            to: "angadsinghsachdeva82166@gmail.com",
-            subject: `KW Group | Invoice for ${month} - ${customer.customer_name}`,
-            text: `Dear ${customer.customer_name},\n\nPlease find attached the invoice for the month of ${month}.\n\nInvoice Number: ${invoiceNumber}\nInvoice Date: ${invoiceDate}\nAmount: ₹${amount}\n\nRegards,\nKW Group Leasing Team`,
-            attachments: [
-              {
-                filename: pdfFilename,
-                path: pdfOutputPath,
-              },
-            ],
-          };
-
-          transporter.sendMail(mailOptions, (emailErr, info) => {
-            if (emailErr) {
-              console.error("Email sending failed!", emailErr);
-              return res.status(500).json({
-                message: "Invoice created but email failed",
-                error: emailErr,
-              });
-            }
-
-            console.log("Email sent successfully!");
-            return res.json({
-              message: "Invoice generated and emailed successfully",
-              invoice_number: invoiceNumber,
-              pdf_path: pdfOutputPath,
-            });
-          });
-        }
+      await execAsync(
+        `"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf --outdir "${outputDir}" "${outputPath}"`
       );
-    }
-  } catch (err) {
-    console.error("Error in invoice generation:", err);
-    return res.status(500).json({
-      message: "Internal server error",
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER1,
+          pass: process.env.EMAIL_PASSWORD1,
+        },
+      });
+
+      const mailOptions = {
+        from: `"Angad Singh" <${process.env.EMAIL_USER1}>`,
+        // to: customer.customer_email,
+        to: "angadsinghsachdeva82166@gmail.com",
+        subject: `KW Group | Invoice for ${month} - ${customer.customer_name}`,
+        text: `Dear ${customer.customer_name},\n\nPlease find attached the invoice for the month of ${month}.\n\nInvoice Number: ${invoiceNumber}\nInvoice Date: ${invoiceDate}\nAmount: ₹${rentShareAmount}\n\nRegards,\nKW Group Leasing Team`,
+        attachments: [
+          {
+            filename: pdfFilename,
+            path: pdfOutputPath,
+          },
+        ],
+      };
+
+      await sendEmailAsync(transporter, mailOptions);
+
+      results.push({ customer: customer.customer_name, status: "success" });
+    } catch (err) {
+    results.push({
+      customer: customer.customer_name,
+      status: "failed",
       error: err.message,
     });
   }
+}
+res.json({message: "Invoice generate completed", results});
+} catch(err){
+  console.error("Error in Invoice generation:", err);
+  return res.status(500).json({
+    message:"Internal server error",
+    error: err.message,
+  });
+}
 });
 
 app.listen(3000, () => {
