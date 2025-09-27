@@ -9,6 +9,7 @@ const numToWords = require("number-to-words");
 const { exec } = require("child_process");
 const nodemailer = require("nodemailer");
 const { stderr } = require("process");
+const dayjs = require("dayjs");
 
 const app = express();
 app.use(cors());
@@ -55,32 +56,35 @@ app.post("/generate-invoice", async (req, res) => {
       customersList.includes(c.id)
     );
 
+    function monthToWord(month, format="MMM"){
+      return dayjs(month).format(format);
+    }
+
     const results = [];
 
     for (let customer of chosenCustomers) {
       try{
-      const rentShareAmount = (customer.share * amount) / 100;
+      const rentShareAmount = Math.ceil((customer.share * amount) / 100);
 
       const trackerPath = "./data/invoice_tracker.json";
       const tracker = await fs.readJson(trackerPath);
       const fiscalYear = "25-26";
 
       tracker[currentBrand.brandId] ??= {};
-      tracker[currentBrand.brandId][customer.id] ??= {};
-      tracker[currentBrand.brandId][customer.id][fiscalYear] ??= 0;
+      tracker[currentBrand.brandId][fiscalYear] ??= 0;
 
       const lastNum =
-        tracker[currentBrand.brandId][customer.id]?.[fiscalYear] || 0;
+        tracker[currentBrand.brandId]?.[fiscalYear] || 0;
       const nextNum = lastNum + 1;
-      const billMonth = month;
+      const billMonth = monthToWord(month);
       const invoiceDate = formatDate();
       const invoiceNumber = `${fiscalYear}/${String(nextNum).padStart(
         2,
         "0"
       )}/${billMonth}`;
 
-      tracker[currentBrand.brandId][customer.id] = {
-        ...tracker[currentBrand.brandId][customer.id],
+      tracker[currentBrand.brandId] = {
+        ...tracker[currentBrand.brandId],
         [fiscalYear]: nextNum,
       };
       await fs.writeJson(trackerPath, tracker, { spaces: 2 });
@@ -101,7 +105,7 @@ app.post("/generate-invoice", async (req, res) => {
       const templateData = {
         invoice_no: invoiceNumber,
         date: invoiceDate,
-        month: month.toUpperCase(),
+        month: billMonth.toUpperCase(),
         amount: rentShareAmount,
         amountInWords: amountInWords,
         customer_name: customer.customer_name,
@@ -137,12 +141,12 @@ app.post("/generate-invoice", async (req, res) => {
       const outputDir = path.join(__dirname, "output");
       await fs.ensureDir(outputDir);
 
-      const docxFilename = `Invoice-${customer.customer_name}-${month}-${fiscalYear}.docx`;
+      const docxFilename = `Invoice-${customer.customer_name}-${billMonth}-${fiscalYear}.docx`;
       const outputPath = path.join(outputDir, docxFilename);
 
       await fs.writeFile(outputPath, buf);
 
-      const pdfFilename = `Invoice-${customer.customer_name}-${month}-${fiscalYear}.pdf`;
+      const pdfFilename = `Invoice-${customer.customer_name}-${billMonth}-${fiscalYear}.pdf`;
       const pdfOutputPath = path.join(outputDir, pdfFilename);
 
       await execAsync(
@@ -159,10 +163,10 @@ app.post("/generate-invoice", async (req, res) => {
 
       const mailOptions = {
         from: `"Angad Singh" <${process.env.EMAIL_USER1}>`,
-        // to: customer.customer_email,
-        to: "angadsinghsachdeva82166@gmail.com",
-        subject: `KW Group | Invoice for ${month} - ${customer.customer_name}`,
-        text: `Dear ${customer.customer_name},\n\nPlease find attached the invoice for the month of ${month}.\n\nInvoice Number: ${invoiceNumber}\nInvoice Date: ${invoiceDate}\nAmount: ₹${rentShareAmount}\n\nRegards,\nKW Group Leasing Team`,
+        to: customer.customer_email,
+        // to: "angadsinghsachdeva82166@gmail.com",
+        subject: `KW Group | Invoice for ${billMonth} - ${customer.customer_name}`,
+        text: `Dear ${customer.customer_name},\n\nPlease find attached the invoice for the month of ${billMonth}.\n\nInvoice Number: ${invoiceNumber}\nInvoice Date: ${invoiceDate}\nAmount: ₹${rentShareAmount}\n\nRegards,\nKW Group Leasing Team`,
         attachments: [
           {
             filename: pdfFilename,

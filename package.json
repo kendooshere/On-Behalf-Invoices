@@ -20,6 +20,7 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "dayjs": "^1.11.18",
     "docxtemplater": "^3.61.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
