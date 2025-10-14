@@ -75,7 +75,7 @@
     {
       "brandId": "002",
       "reg_name": "Kiaasa",
-      "brand_name": "Kiaasa Retail Private Limited",
+      "brand_name": "Kiaasa Retail Limited",
       "floor": "First Floor",
       "brand_email": "hr@kiaasaretail.com",
       "brand_address": "1/37SS GT Road Industrial Area, Lal Kuan,\nGhaziabad, UP-201001",
@@ -86,7 +86,7 @@
         {
           "id": "cust006",
           "customer_name": "Prateek Gupta",
-          "customer_email": "prateek21.gupta@yahoo.in",
+          "customer_email": "angadsinghkhalsa28@gmail.com",
           "customer_address": "R-14/99, Raj Nagar\nGHAZIABAD, UTTAR PRADESH -201001",
           "customer_mob": "9717207388, 9810410574",
           "customer_pan": "ATBPG8602J",
@@ -111,7 +111,34 @@
         {
           "id": "cust007",
           "customer_name": "LATA Pandey",
-          "customer_email": " latacharming@gmail.com",
+          "customer_email": "angadsinghkhalsa28@gmail.com",
+          "customer_address": "A-17,1st Floor Near NMC Hospital Sec-30\nNoida, Uttar Pradesh- 201301",
+          "customer_mob": "9891849068",
+          "customer_pan": "AHSPP2014J",
+          "customer_bank": "HDFC BANK\nSECTOR-31, NOIDA\nACCOUNT NO. : 18991930002173\nIFSC CODE  :   HDFC0001899\n",
+          "unit": "LG-130",
+          "lease_expiry": "2026-12-31",
+          "share":"100"
+        }
+      ]
+    },
+        {
+      "brandId": "004",
+      "reg_name": "VIP",
+      "brand_name": " M/S. Pawandev Trading Co. (P/O Ms. Monika)",
+      "floor": "LG-Floor",
+      "brand_email": "angadsinghsachdeva82166@gmail.com",
+      "brand_address": "LG-130, KW Delhi 6, NH-58 Raj Nagar Extn.,\nGhaziabad-201001",
+      "brand_mob": "8851206322",
+      "brand_pan": "HABPM1866E",
+      "brand_gst": "09HABPM1866E1ZL",
+      "brand_invoice_mails":"pawandevtradingcopp@gmail.com",
+      "brandRM": "angadsinghkhalsa28@gmail.com",
+      "customers": [  
+        {
+          "id": "cust007",
+          "customer_name": "LATA Pandey",
+          "customer_email": "angadsinghkhalsa28@gmail.com",
           "customer_address": "A-17,1st Floor Near NMC Hospital Sec-30\nNoida, Uttar Pradesh- 201301",
           "customer_mob": "9891849068",
           "customer_pan": "AHSPP2014J",

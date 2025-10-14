@@ -122,6 +122,8 @@ app.post("/generate-invoice", async (req, res) => {
         brand_mob: currentBrand.brand_mob,
         brand_pan: currentBrand.brand_pan,
         brand_gst: currentBrand.brand_gst,
+        brand_invoice_mail: currentBrand.brand_invoice_mails,
+        brandRM: currentBrand.brandRM
       };
 
       const missingPlaceholders = Object.keys(templateData).filter(
@@ -165,8 +167,12 @@ app.post("/generate-invoice", async (req, res) => {
         from: `"Angad Singh" <${process.env.EMAIL_USER1}>`,
         to: customer.customer_email,
         // to: "angadsinghsachdeva82166@gmail.com",
-        subject: `KW Group | Invoice for ${billMonth} - ${customer.customer_name}`,
-        text: `Dear ${customer.customer_name},\n\nPlease find attached the invoice for the month of ${billMonth}.\n\nInvoice Number: ${invoiceNumber}\nInvoice Date: ${invoiceDate}\nAmount: ₹${rentShareAmount}\n\nRegards,\nKW Group Leasing Team`,
+        subject: `Rent Invoices for month ${billMonth}'25 ${customer.unit} # Brand - ${currentBrand.brand_name}`,
+        text: `Dear Sir/Mam,\nKindly find the attached rent invoice for m/o ${billMonth}'25 month to claim rent from the brand.\n
+
+Please send it to below E-Mail ID's after signature so that brand will process the same to release the payment.\n
+${currentBrand.brand_invoice_mails}\n
+${currentBrand.brandRM} Please coordinate for the release of the payment asap\n`,
         attachments: [
           {
             filename: pdfFilename,
